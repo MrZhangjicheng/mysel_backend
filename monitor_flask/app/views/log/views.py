@@ -1,12 +1,12 @@
 import datetime
 from flask import g,request
 from . import log_blueprint
-from app.models.mysql_sql import memModel
+from app.models.mysql_sql import memModel,cpuModel,swapModel
 
 from common_utils import json_response
 
-@log_blueprint.route('/select',methods=['POST','GET'])
-def select():
+@log_blueprint.route('/select_mem',methods=['POST','GET'])
+def select_mem():
 
     now_time,next_time = dt_range()
     now_time = now_time.strftime("%Y-%m-%d %H") + " 00:00"
@@ -30,36 +30,48 @@ def select():
     return json_response(request,status=0,data=data)
 
 
-@log_blueprint.route('/select_three',methods=["POST"])
-def select_three():
-    id = request.get_json(force=True).get("id")
-    now_time,next_time = dt_range()
-    now_time = now_time.strftime("%Y-%m-%d ") + "00:00:00"
-    next_time = next_time.strftime("%Y-%m-%d ") + "23:59:59"
-    data_tmp = memModel.query_three_day(now_time,next_time)
-    print(data_tmp)
-    total_list = []
-
-    for tmp in data_tmp:
-        tmp_list = []
-        tmp_list.append(float(tmp[0]))
-        tmp_list.append(datetime.datetime.strftime(tmp[1], "%Y-%m-%d %H:%M:%S"))
-
-        total_list.append(tmp_list)
-
-    print(total_list)
-    data = {"data": total_list}
-    print(data)
-
-
-@log_blueprint.route('/select_month',methods=["POST"])
-def select_month():
-    id = request.get_json(force=True).get("id")
+@log_blueprint.route('/select_cpu',methods=['POST','GET'])
+def select_cpu():
     now_time, next_time = dt_range()
     now_time = now_time.strftime("%Y-%m-%d %H") + " 00:00"
     next_time = next_time.strftime("%Y-%m-%d %H") + " 00:00"
-    data = memModel.query_three_day(now_time, next_time)
-    print(data)
+
+    data_tmp = cpuModel.query_hour(now_time, next_time)
+
+    total_data_list = []
+    total_time_list = []
+    for tmp in data_tmp:
+        tmp_list = []
+        tmp_list.append(datetime.datetime.strftime(tmp[1], "%H:%M:%S"))
+        tmp_list.append(float(tmp[0]))
+        total_time_list.append(datetime.datetime.strftime(tmp[1], "%H:%M:%S"))
+
+        total_data_list.append(tmp_list)
+
+    data = {"data_mem": total_data_list, "data_time": total_time_list}
+    return json_response(request, status=0, data=data)
+
+
+@log_blueprint.route('/select_swap',methods=['POST','GET'])
+def select_swap():
+    now_time, next_time = dt_range()
+    now_time = now_time.strftime("%Y-%m-%d %H") + " 00:00"
+    next_time = next_time.strftime("%Y-%m-%d %H") + " 00:00"
+
+    data_tmp = swapModel.query_hour(now_time, next_time)
+
+    total_data_list = []
+    total_time_list = []
+    for tmp in data_tmp:
+        tmp_list = []
+        tmp_list.append(datetime.datetime.strftime(tmp[1], "%H:%M:%S"))
+        tmp_list.append(float(tmp[0]))
+        total_time_list.append(datetime.datetime.strftime(tmp[1], "%H:%M:%S"))
+
+        total_data_list.append(tmp_list)
+
+    data = {"data_mem": total_data_list, "data_time": total_time_list}
+    return json_response(request, status=0, data=data)
 
 
 

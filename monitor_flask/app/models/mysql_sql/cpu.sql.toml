@@ -1,0 +1,23 @@
+cpu_hour_query = '''\
+select percent, create_dt from cpu \
+where create_dt >= :now_time and create_dt < :next_time \
+order by create_dt asc
+'''
+
+cpu_day_query = ''' \
+select DATE_FORMAT(create_dt,'%Y-%m-%d %H:00:00') as time,\
+min(percent), max(percent),avg(percent) \
+from  cpu \
+where create_dt >= :now_time and create_dt < :next_time \
+group by time \
+'''
+
+cpu_month_query ='''\
+select DATE(create_dt) as data,\
+min(percent),max(percent),avg(percent) \
+from cpu \
+whhere create_dt >= :now_time and create_dt < :next_time \
+group by data \
+'''
+
+
