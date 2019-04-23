@@ -1,0 +1,9 @@
+server:
+  debug: true
+# secret_key: jcwcoj_=t5q%v_8=dqs91xg3=xk+ebx3nsb!iyri7hge7arl0(
+  host: 127.0.0.1
+  port: 8000
+  domain: 0.0.0.0
+
+mysql:
+  uri: mysql+mysqlconnector://debian-sys-maint:qu40zW3RCPzg1UEF@127.0.0.1:3306/monitor
