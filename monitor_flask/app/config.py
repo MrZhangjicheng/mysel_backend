@@ -15,6 +15,7 @@ class FileConfig(metaclass=MetaSingleton):
         self._yaml_cfg = FileConfig.__get_config_file(cfg_file)
         self.server_cfg = self._yaml_cfg.get('server',None)
         self.mysql_cfg = self._yaml_cfg.get('mysql',None)
+        self.redis_cfg = self._yaml_cfg.get("redis",None)
 
     @staticmethod
     def __get_config_file(cfg_file):
@@ -45,3 +46,10 @@ class MysqlConfig(metaclass=MetaSingleton):
             object.__setattr__(self,k,v)
     def get_uri(self):
         return self.uri
+
+
+
+class RedisConfig(metaclass=MetaSingleton):
+    def __init__(self):
+        for k,v in FileConfig.get_config().redis_cfg.items():
+            object.__setattr__(self,k,v)

@@ -2,6 +2,7 @@
 from app.config import ServerConfig
 from flask import Flask,request
 
+
 def init_vendor_odm(app):
     from app.config import MysqlConfig
     from .models.mysql_orm import mysql_db
@@ -23,6 +24,9 @@ def init_controllers(app):
 
     from app.views.time import time_blueprint
     app.register_blueprint(time_blueprint,url_prefix='/time')
+
+
+
 
 def create_app():
     app = Flask(__name__)
