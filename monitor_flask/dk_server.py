@@ -1,6 +1,8 @@
 from app import run_app
 import global_data as gol
 
+
+
 gol._init()
 
 
