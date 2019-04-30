@@ -1,5 +1,6 @@
 import json
 import datetime
+import time
 from sqlalchemy.orm import sessionmaker
 import global_data as gol
 from app.cache.cache_redis import CacheRedis
@@ -111,9 +112,14 @@ def set_mysql():
 
 
 if __name__ == '__main__':
-    set_mysql()
-    from app.cache.cache_redis import CacheRedis
-    cacheRedis = CacheRedis()
-    cacheRedis.flushall()
+    while True:
+        time.sleep(300)
+        print(datetime.datetime.now().strftime("%Y-%m-%d %H:%M"))
+        set_mysql()
+        from app.cache.cache_redis import CacheRedis
+        cacheRedis = CacheRedis()
+        cacheRedis.flushall()
+
+
 
 

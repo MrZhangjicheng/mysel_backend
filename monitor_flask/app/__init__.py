@@ -38,4 +38,4 @@ def create_app():
 
 def run_app():
     app = create_app()
-    app.run(debug=ServerConfig().debug ,host=ServerConfig().host ,port=ServerConfig().port)
+    app.run(processes=4,debug=ServerConfig().debug ,host=ServerConfig().host ,port=ServerConfig().port)

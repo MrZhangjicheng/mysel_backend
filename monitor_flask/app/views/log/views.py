@@ -32,9 +32,13 @@ def select_mem():
 
 @log_blueprint.route('/select_cpu',methods=['POST','GET'])
 def select_cpu():
-    now_time, next_time = dt_range()
+
+
+
+    now_time,next_time = dt_range()
     now_time = now_time.strftime("%Y-%m-%d %H") + " 00:00"
-    next_time = next_time.strftime("%Y-%m-%d %H") + " 00:00"
+    next_time = (next_time + datetime.timedelta(hours=1)).strftime("%Y-%m-%d %H") + " 00:00"
+
 
     data_tmp = cpuModel.query_hour(now_time, next_time)
 
@@ -79,4 +83,4 @@ def select_swap():
 def dt_range():
     now_time = datetime.datetime.now()  # 当前小时的时间
     next_time = now_time + datetime.timedelta(hours=1)  # 下一个小时时间
-    return  now_time,next_time
+    return  now_time ,next_time
